@@ -62,6 +62,22 @@ let drawPoints = () => {
 		});
 };
 
+// Generating Axes
+let generateAxes = () => {
+	xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
+	yAxis = d3.axisLeft(yScale).tickFormat(d3.timeFormat("%M:%S"));
+	svg
+		.append("g")
+		.call(xAxis)
+		.attr("id", "x-axis")
+		.attr("transform", "translate(0, " + (height - padding) + ")");
+	svg
+		.append("g")
+		.call(yAxis)
+		.attr("id", "y-axis")
+		.attr("transform", "translate(" + padding + ", 0)");
+};
+
 // Fetching JSON Data
 req.open("GET", url, true);
 req.onload = () => {
