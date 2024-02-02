@@ -32,6 +32,36 @@ let generateScales = () => {
 		.range([padding, height - padding]);
 };
 
+// Drawing Canvas
+let drawCanvas = () => {
+	svg.attr("width", width);
+	svg.attr("height", height);
+};
+
+// Drawing Points
+let drawPoints = () => {
+	svg
+		.selectAll("circle")
+		.data(values)
+		.enter()
+		.append("circle")
+		.attr("class", "dot")
+		.attr("r", "5")
+		.attr("data-xvalue", (item) => item["Year"])
+		.attr("data-yvalue", (item) => new Date(item["Seconds"] * 1000))
+		.attr("cx", (item) => xScale(item["Year"]))
+		.attr("cy", (item) => yScale(new Date(item["Seconds"] * 1000)))
+		.attr("fill", (item) => (item["URL"] === "" ? "green" : "orange"))
+		.on("mouseover", (item) => {
+			tooltip.transition().style("visibility", "visible");
+			tooltip.text(`${item["Year"]} - ${item["Name"]} - ${item["Time"]} - ${item["Doping"] !== "" ? item["Doping"] : "No Allegations"}`);
+			tooltip.attr("data-year", item["Year"]);
+		})
+		.on("mouseout", (item) => {
+			tooltip.transition().style("visibility", "hidden");
+		});
+};
+
 // Fetching JSON Data
 req.open("GET", url, true);
 req.onload = () => {
