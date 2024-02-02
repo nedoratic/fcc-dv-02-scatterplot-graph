@@ -38,6 +38,13 @@ let drawCanvas = () => {
 	svg.attr("height", height);
 };
 
+// Handling Tooltip
+let handleTooltip = (item) => {
+	tooltip.transition().style("visibility", "visible");
+	tooltip.text(`${item["Year"]} - ${item["Name"]} - ${item["Time"]} - ${item["Doping"] !== "" ? item["Doping"] : "No Allegations"}`);
+	tooltip.attr("data-year", item["Year"]);
+};
+
 // Drawing Points
 let drawPoints = () => {
 	svg
@@ -51,13 +58,11 @@ let drawPoints = () => {
 		.attr("data-yvalue", (item) => new Date(item["Seconds"] * 1000))
 		.attr("cx", (item) => xScale(item["Year"]))
 		.attr("cy", (item) => yScale(new Date(item["Seconds"] * 1000)))
-		.attr("fill", (item) => (item["URL"] === "" ? "green" : "orange"))
-		.on("mouseover", (item) => {
-			tooltip.transition().style("visibility", "visible");
-			tooltip.text(`${item["Year"]} - ${item["Name"]} - ${item["Time"]} - ${item["Doping"] !== "" ? item["Doping"] : "No Allegations"}`);
-			tooltip.attr("data-year", item["Year"]);
+		.attr("fill", (item) => (item["URL"] === "" ? "dodgerblue" : "tomato"))
+		.on("mouseover", function (event, item) {
+			handleTooltip(item);
 		})
-		.on("mouseout", (item) => {
+		.on("mouseout", () => {
 			tooltip.transition().style("visibility", "hidden");
 		});
 };
