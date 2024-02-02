@@ -1,4 +1,7 @@
+// URL variable
 let url = "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
+
+// XMLHttpRequest variable
 let req = new XMLHttpRequest();
 
 let values = [];
@@ -15,3 +18,15 @@ let padding = 40;
 
 let svg = d3.select("svg");
 let tooltip = d3.select("#tooltip");
+
+// Fetching JSON Data
+req.open("GET", url, true);
+req.onload = () => {
+	values = JSON.parse(req.responseText);
+	console.log(values);
+	drawCanvas();
+	generateScales();
+	drawPoints();
+	generateAxes();
+};
+req.send();
